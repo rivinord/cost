@@ -8,7 +8,8 @@
         { name: 'retro', label: 'Retro' },
     ]
 
-    let theme = $state('auto')
+    //should be auto, light just when developing
+    let theme = $state('light')
 
 $effect(() => {
     document.documentElement.setAttribute('data-theme', theme)
@@ -31,8 +32,3 @@ $effect(() => {
 
 
 
-<div class="max-w-lg 3xl:max-w-xl">
-    <h1 class="font-display text-4xl">
-        <span class="text-neon-pink">Dark mode</span> works!!1
-    </h1>
-  </div>

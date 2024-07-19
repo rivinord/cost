@@ -3,9 +3,7 @@
     import Themes from './Theme.svelte'
     import Table from './Table.svelte'
   </script>
-  
-  <Skull />
-  <Moon />
+
 
   <Themes />
 
