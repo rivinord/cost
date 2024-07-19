@@ -1,6 +1,32 @@
 <script lang="ts">
 
-import { X }  from 'lucide-svelte';
+import { X, Plus }  from 'lucide-svelte';
+
+
+let examples = [
+	{ name: 'Milk', label: '🥛 Milk' },
+	{ name: 'Bread', label: '🍞 Bread' },
+	{ name: 'Butter', label: '🥖 Butter' },
+	{ name: 'Egg', label: '🥚 Egg' },
+	{ name: 'Cheese', label: '🧀 Cheese' },
+	{ name: 'Meat', label: '🥩 Meat' },
+	{ name: 'Fish', label: '🐟 Fish' },
+	{ name: 'Fruits', label: '🍉 Fruits' },
+	{ name: 'Vegetables', label: '🥕 Vegetables' },
+	{ name: 'Pasta', label: '🍝 Pasta' },
+	{ name: 'Rice', label: '🍚 Rice' },
+	{ name: 'Potato', label: '🥔 Potato' },
+	{ name: 'Tomato', label: '🍅 Tomato' },
+	{ name: 'Onion', label: '🥒 Onion' },
+	{ name: 'Garlic', label: '💡 Garlic' },
+	{ name: 'Herbs', label: '🌿 Herbs' },
+	{ name: 'Spices', label: '❗️ Spices' },
+	{ name: 'Salt', label: '💸 Salt' },
+	{ name: 'Sugar', label: '🍮 Sugar' },
+	{ name: 'Honey', label: '🍯 Honey' },
+	{ name: 'Olive oil', label: '💧 Olive oil' },
+	{ name: 'Other', label: '🤔 Other' },
+]
 
 let ingredients = $state([
 		{ id: 1, name: 'Tomato', packageCost: 2, packageVolume: 3.5, recipeVolume: 4 },
@@ -31,19 +57,24 @@ let ingredients = $state([
 </script>
 
 
+<div class="flex flex-wrap gap-2">
+    {#each examples as { name, label }}
+    <button class="btn">{label}</button>
+    {/each}
+</div>
 
 
-<h1 class="text-3xl font-bold ml-4">Ingredients table</h1>
+<h1 class="text-3xl font-bold ml-4 ">Ingredients table</h1>
 
-<div class="border rounded-lg overflow-hidden">
+<div class="border rounded-2xl overflow-hidden">
 <table class="table">
-	<thead>
+	<thead class="bg-base-200">
 		<tr>
 			<th scope="col"></th>
-			<th scope="col">Ingredient</th>
-			<th scope="col">Package Cost</th>
-			<th scope="col">Package Volume</th>
-			<th scope="col">Recipe Volume</th>
+			<th scope="col">Ингредиент</th>
+			<th scope="col">Стоимость упаковки</th>
+			<th scope="col">Объем в упаковке</th>
+			<th scope="col">Объем в рецепте</th>
 			<th scope="col"></th>
 		</tr>
 	</thead>
@@ -55,21 +86,32 @@ let ingredients = $state([
 				<td><input type="number" bind:value={ingredient.packageCost} class="input input-bordered w-full max-w-xs" /></td>
 				<td><input type="number" bind:value={ingredient.packageVolume} class="input input-bordered w-full max-w-xs" /></td>
 				<td><input type="number" bind:value={ingredient.recipeVolume} class="input input-bordered w-full max-w-xs" /></td>
-				<td><button onclick={() => deleteIngredient(ingredient.id)}><X class="text-red-500" strokeWidth={3} size={20} /></button></td>
+				<td class="bg-base-200"><button  onclick={() => deleteIngredient(ingredient.id)}><X class="text-red-500" strokeWidth={3} size={20} /></button></td>
 			</tr>
 		{/each}
 	</tbody>
     <tfoot>
         <tr class="bg-base-200">
-            <td class="text-right text-red-500  text-xl" colspan="6">Общая себестоимость: {tableSum()} ₽</td>
+            <td colspan="1"></td>
+            <td colspan="1"><button class="btn btn-outline w-full border border-dashed border-neutral" onclick={() => (ingredients = [...ingredients, { id: ingredients.length + 1, name: '', packageCost: 0, packageVolume: 0, recipeVolume: 0 }])}> 
+                <Plus /> 
+            </button></td>
+            <td class="text-right text-red-500 text-lg" colspan="3">
+                Общая себестоимость:
+                {tableSum()}&#8381;
+            </td>
+            <td colspan="1"></td>
         </tr>
     </tfoot>
 </table>
 </div>
 
-<p>rrr</p>
+<p>rrr 
+</p>
 
-<button class="btn" onclick={() => (ingredients = [...ingredients, { id: ingredients.length + 1, name: '', packageCost: 0, packageVolume: 0, recipeVolume: 0 }])}> Add new </button>
+<button class="btn" onclick={() => (ingredients = [...ingredients, { id: ingredients.length + 1, name: '', packageCost: 0, packageVolume: 0, recipeVolume: 0 }])}>
+    Add new 
+</button>
 
 
 <style>
@@ -86,9 +128,10 @@ let ingredients = $state([
     }
 
     .table td, .table th {
-      padding: 0.25rem;
-      white-space: normal; /* Позволяет тексту переноситься на новые строки */
-      word-wrap: break-word; /* Переносит слова при необходимости */
+            
+        padding: 0.25rem;
+        white-space: normal; /* Позволяет тексту переноситься на новые строки */
+        word-wrap: break-word; /* Переносит слова при необходимости */
     }
   
     .table input {
@@ -96,5 +139,10 @@ let ingredients = $state([
       box-sizing: border-box;
       padding: 0.5rem;
     }
+
+    div {
+      border-color: transparent;
+    }
+    
 
   </style>

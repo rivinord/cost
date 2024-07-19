@@ -9,7 +9,7 @@
     ]
 
     //should be auto, light just when developing
-    let theme = $state('light')
+    let theme = $state('auto')
 
 $effect(() => {
     document.documentElement.setAttribute('data-theme', theme)
