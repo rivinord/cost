@@ -50,59 +50,65 @@ let ingredients = $state([
 </script>
 
 
+
+<p>Добавьте ингредиенты в таблицу, например:</p>
+<!-- render examples -->
 <div class="grid grid-cols-1 gap-7">
-<div class="flex flex-wrap gap-2">
-    {#each examples as { name, label }}
-    <button class="btn">{label}</button>
-    {/each}
+    <div class="flex flex-wrap  gap-2 justify-stretch">
+        {#each examples as { name, label }}
+        <button class="btn btn-sm" onclick={() => (ingredients = [...ingredients, { id: ingredients.length + 1, name, packageCost: 0, packageVolume: 0, recipeVolume: 0 }])}>{label}</button>
+        {/each}
+    </div>
+
+
+    <h1 class="text-3xl font-bold ml-4 ">Ingredients table</h1>
+
+    <div class="border rounded-2xl overflow-hidden ">
+        <table class="table">
+            <thead class="bg-base-200">
+                <tr>
+                    <th scope="col"></th>
+                    <th scope="col">🍱 Ингредиент</th>
+                    <th scope="col">Стоимость упаковки</th>
+                    <th scope="col">Объем в&nbsp;упаковке</th>
+                    <th scope="col">Объем в&nbsp;рецепте</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                {#each ingredients as ingredient (ingredient.id)}
+                    <tr>
+                        <th class="text-xs bg-base-200 text-neutral w-fit">{ingredient.id}</th>
+                        <th scope="row"><input type="text" bind:value={ingredient.name} class="input input-bordered w-full max-w-xs" /></th>
+                        <td><input type="number" bind:value={ingredient.packageCost} class="input input-bordered w-full max-w-xs" /></td>
+                        <td><input type="number" bind:value={ingredient.packageVolume} class="input input-bordered w-full max-w-xs" /></td>
+                        <td><input type="number" bind:value={ingredient.recipeVolume} class="input input-bordered w-full max-w-xs" /></td>
+                        <!-- кнопка удалить ингредиент -->
+                        <td class="bg-base-200"><button  onclick={() => deleteIngredient(ingredient.id)}><X class="text-red-500" strokeWidth={3} size={20} /></button></td>
+                    </tr>
+                {/each}
+            </tbody>
+            <tfoot>
+                <tr class="bg-base-200">
+                    <td colspan="1"></td>
+                    <!-- кнопка добавить новый ингредиент -->
+                    <td colspan="1"><button class="btn btn-outline w-full border-dashed border-base-content/30" onclick={() => (ingredients = [...ingredients, { id: ingredients.length + 1, name: '', packageCost: 0, packageVolume: 0, recipeVolume: 0 }])}> 
+                        <Plus /> 
+                    </button></td>
+                    <!-- выводит сумму всех ингредиентов в рецепте -->
+                    <td class="text-right text-red-500 text-lg" colspan="3">
+                        Общая себестоимость:
+                        {tableSum()}&#8381;
+                    </td>
+                    <td colspan="1"></td>
+                </tr>
+            </tfoot>
+        </table>
 </div>
 
 
-<h1 class="text-3xl font-bold ml-4 ">Ingredients table</h1>
 
-<div class="border rounded-2xl overflow-hidden">
-<table class="table">
-	<thead class="bg-base-200">
-		<tr>
-			<th scope="col"></th>
-			<th scope="col">Ингредиент</th>
-			<th scope="col">Стоимость упаковки</th>
-			<th scope="col">Объем в упаковке</th>
-			<th scope="col">Объем в рецепте</th>
-			<th scope="col"></th>
-		</tr>
-	</thead>
-	<tbody>
-		{#each ingredients as ingredient (ingredient.id)}
-			<tr>
-                <th class="text-xs bg-base-200 text-neutral w-fit">{ingredient.id}</th>
-				<th scope="row"><input type="text" bind:value={ingredient.name} class="input input-bordered w-full max-w-xs" /></th>
-				<td><input type="number" bind:value={ingredient.packageCost} class="input input-bordered w-full max-w-xs" /></td>
-				<td><input type="number" bind:value={ingredient.packageVolume} class="input input-bordered w-full max-w-xs" /></td>
-				<td><input type="number" bind:value={ingredient.recipeVolume} class="input input-bordered w-full max-w-xs" /></td>
-				<td class="bg-base-200"><button  onclick={() => deleteIngredient(ingredient.id)}><X class="text-red-500" strokeWidth={3} size={20} /></button></td>
-			</tr>
-		{/each}
-	</tbody>
-    <tfoot>
-        <tr class="bg-base-200">
-            <td colspan="1"></td>
-            <td colspan="1"><button class="btn btn-outline w-full border-dashed border-neutral-content/30" onclick={() => (ingredients = [...ingredients, { id: ingredients.length + 1, name: '', packageCost: 0, packageVolume: 0, recipeVolume: 0 }])}> 
-                <Plus /> 
-            </button></td>
-            <td class="text-right text-red-500 text-lg" colspan="3">
-                Общая себестоимость:
-                {tableSum()}&#8381;
-            </td>
-            <td colspan="1"></td>
-        </tr>
-    </tfoot>
-</table>
-</div>
-
-<p>rrr 
-</p>
-
+<!-- кнопка добавить новый ингредиент -->
 <button class="btn" onclick={() => (ingredients = [...ingredients, { id: ingredients.length + 1, name: '', packageCost: 0, packageVolume: 0, recipeVolume: 0 }])}>
     Add new 
 </button>
@@ -112,13 +118,6 @@ let ingredients = $state([
 
 
 <style>
-
-
-
-
-  table {
-    margin: 0rem; /* Переопределить margin для table на 0 */
-  }
 
     input {
     @apply input-bordered border-dashed;
