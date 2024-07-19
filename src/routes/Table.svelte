@@ -4,34 +4,27 @@ import { X, Plus }  from 'lucide-svelte';
 
 
 let examples = [
-	{ name: 'Milk', label: '🥛 Milk' },
-	{ name: 'Bread', label: '🍞 Bread' },
-	{ name: 'Butter', label: '🥖 Butter' },
-	{ name: 'Egg', label: '🥚 Egg' },
-	{ name: 'Cheese', label: '🧀 Cheese' },
-	{ name: 'Meat', label: '🥩 Meat' },
-	{ name: 'Fish', label: '🐟 Fish' },
-	{ name: 'Fruits', label: '🍉 Fruits' },
-	{ name: 'Vegetables', label: '🥕 Vegetables' },
-	{ name: 'Pasta', label: '🍝 Pasta' },
-	{ name: 'Rice', label: '🍚 Rice' },
-	{ name: 'Potato', label: '🥔 Potato' },
-	{ name: 'Tomato', label: '🍅 Tomato' },
-	{ name: 'Onion', label: '🥒 Onion' },
-	{ name: 'Garlic', label: '💡 Garlic' },
-	{ name: 'Herbs', label: '🌿 Herbs' },
-	{ name: 'Spices', label: '❗️ Spices' },
-	{ name: 'Salt', label: '💸 Salt' },
-	{ name: 'Sugar', label: '🍮 Sugar' },
-	{ name: 'Honey', label: '🍯 Honey' },
-	{ name: 'Olive oil', label: '💧 Olive oil' },
-	{ name: 'Other', label: '🤔 Other' },
+	{ name: 'Молоко', label: '🥛 Молоко' },
+	{ name: 'Хлеб', label: '🍞 Хлеб' },
+	{ name: 'Масло', label: '🧈 Масло' },
+	{ name: 'Яйцо', label: '🥚 Яица' },
+	{ name: 'Сыр', label: '🧀 Сыр' },
+	{ name: 'Мясо', label: '🥩 Мясо' },
+	{ name: 'Рыба', label: '🐟 Рыба' },
+	{ name: 'Картофель', label: '🥔 Картофель' },
+	{ name: 'Помидор', label: '🍅 Помидор' },
+	{ name: 'Лук', label: '🥒 Лук' },
+	{ name: 'Чеснок', label: '💡 Чеснок' },
+	{ name: 'Соль', label: '💸 Соль' },
+	{ name: 'Сахар', label: '🍮 Сахар' },
+	{ name: 'Мед', label: '🍯 Мед' },
+	{ name: 'Оливковое масло', label: '💧 Оливковое масло' },
 ]
 
 let ingredients = $state([
-		{ id: 1, name: 'Tomato', packageCost: 2, packageVolume: 3.5, recipeVolume: 4 },
-		{ id: 2, name: 'Onion', packageCost: 1.2, packageVolume: 1.5, recipeVolume: 2 },
-		{ id: 3, name: 'Potato', packageCost: 0.5, packageVolume: 0.5, recipeVolume: 0.5 },
+		{ id: 1, name: 'Помидор', packageCost: 2, packageVolume: 3.5, recipeVolume: 4 },
+		{ id: 2, name: 'Лук', packageCost: 1.2, packageVolume: 1.5, recipeVolume: 2 },
+		{ id: 3, name: 'Картошка', packageCost: 0.5, packageVolume: 0.5, recipeVolume: 0.5 },
 	]);
 
 
@@ -57,6 +50,7 @@ let ingredients = $state([
 </script>
 
 
+<div class="grid grid-cols-1 gap-7">
 <div class="flex flex-wrap gap-2">
     {#each examples as { name, label }}
     <button class="btn">{label}</button>
@@ -93,7 +87,7 @@ let ingredients = $state([
     <tfoot>
         <tr class="bg-base-200">
             <td colspan="1"></td>
-            <td colspan="1"><button class="btn btn-outline w-full border border-dashed border-neutral" onclick={() => (ingredients = [...ingredients, { id: ingredients.length + 1, name: '', packageCost: 0, packageVolume: 0, recipeVolume: 0 }])}> 
+            <td colspan="1"><button class="btn btn-outline w-full border-dashed border-neutral-content/30" onclick={() => (ingredients = [...ingredients, { id: ingredients.length + 1, name: '', packageCost: 0, packageVolume: 0, recipeVolume: 0 }])}> 
                 <Plus /> 
             </button></td>
             <td class="text-right text-red-500 text-lg" colspan="3">
@@ -112,6 +106,9 @@ let ingredients = $state([
 <button class="btn" onclick={() => (ingredients = [...ingredients, { id: ingredients.length + 1, name: '', packageCost: 0, packageVolume: 0, recipeVolume: 0 }])}>
     Add new 
 </button>
+
+
+</div>
 
 
 <style>
