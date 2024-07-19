@@ -50,20 +50,25 @@ let ingredients = $state([
 </script>
 
 
+<div class=" grid grid-cols-1 gap-2 p-6">
+    <p>Добавьте ингредиенты в таблицу, например:</p>
+    <!-- render examples -->
 
-<p>Добавьте ингредиенты в таблицу, например:</p>
-<!-- render examples -->
-<div class="grid grid-cols-1 gap-7">
     <div class="flex flex-wrap  gap-2 justify-stretch">
         {#each examples as { name, label }}
         <button class="btn btn-sm" onclick={() => (ingredients = [...ingredients, { id: ingredients.length + 1, name, packageCost: 0, packageVolume: 0, recipeVolume: 0 }])}>{label}</button>
         {/each}
     </div>
 
+    <p>и введите стоимость и объем каждого ингредиента в упаковке и рецепте</p>
+</div>
 
-    <h1 class="text-3xl font-bold ml-4 ">Ingredients table</h1>
+<div class="grid grid-cols-1 gap-7">
+    
+    <h1 class="text-3xl font-bold px-6 ">Ingredients table</h1>
 
-    <div class="border rounded-2xl overflow-hidden ">
+    <!-- table div starts here -->
+    <div class="border rounded-2xl overflow-hidden mx-2">
         <table class="table">
             <thead class="bg-base-200">
                 <tr>
@@ -90,14 +95,14 @@ let ingredients = $state([
             </tbody>
             <tfoot>
                 <tr class="bg-base-200">
-                    <td colspan="1"></td>
+                    <td colspan="2"></td>
                     <!-- кнопка добавить новый ингредиент -->
-                    <td colspan="1"><button class="btn btn-outline w-full border-dashed border-base-content/30" onclick={() => (ingredients = [...ingredients, { id: ingredients.length + 1, name: '', packageCost: 0, packageVolume: 0, recipeVolume: 0 }])}> 
+                    <!-- <td colspan="1"><button class="btn btn-outline w-full border-dashed border-base-content/30" onclick={() => (ingredients = [...ingredients, { id: ingredients.length + 1, name: '', packageCost: 0, packageVolume: 0, recipeVolume: 0 }])}> 
                         <Plus /> 
-                    </button></td>
+                    </button></td> -->
                     <!-- выводит сумму всех ингредиентов в рецепте -->
                     <td class="text-right text-red-500 text-lg" colspan="3">
-                        Общая себестоимость:
+                        Итого:
                         {tableSum()}&#8381;
                     </td>
                     <td colspan="1"></td>
@@ -113,6 +118,12 @@ let ingredients = $state([
     Add new 
 </button>
 
+<button class="btn btn-primary" onclick={() => {
+    ingredients = [{ id: 1, name: '', packageCost: 0, packageVolume: 0, recipeVolume: 0 }];
+}}>
+    Clear and Add New
+</button>
+
 
 </div>
 
@@ -120,7 +131,7 @@ let ingredients = $state([
 <style>
 
     input {
-    @apply input-bordered border-dashed;
+    @apply input-bordered border-dashed text-sm;
     }
 
     .table td, .table th {
