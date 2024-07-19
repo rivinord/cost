@@ -32,7 +32,10 @@ let ingredients = $state([
 
 
 
+
 <h1 class="text-3xl font-bold ml-4">Ingredients table</h1>
+
+<div class="border rounded-lg overflow-hidden">
 <table class="table">
 	<thead>
 		<tr>
@@ -58,10 +61,13 @@ let ingredients = $state([
 	</tbody>
     <tfoot>
         <tr class="bg-base-200">
-            <td class="text-right text-red-500  text-xl" colspan="6">Общая себестоимость: {tableSum()}</td>
+            <td class="text-right text-red-500  text-xl" colspan="6">Общая себестоимость: {tableSum()} ₽</td>
         </tr>
     </tfoot>
 </table>
+</div>
+
+<p>rrr</p>
 
 <button class="btn" onclick={() => (ingredients = [...ingredients, { id: ingredients.length + 1, name: '', packageCost: 0, packageVolume: 0, recipeVolume: 0 }])}> Add new </button>
 
@@ -72,7 +78,7 @@ let ingredients = $state([
 
 
   table {
-    margin: 0; /* Переопределить margin для table на 0 */
+    margin: 0rem; /* Переопределить margin для table на 0 */
   }
 
     input {
@@ -90,4 +96,5 @@ let ingredients = $state([
       box-sizing: border-box;
       padding: 0.5rem;
     }
+
   </style>

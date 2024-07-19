@@ -9,5 +9,8 @@
 	<title>Daisy</title>
 </svelte:head>
 
-{@render children()}
+
+
+  {@render children()}
+
 
