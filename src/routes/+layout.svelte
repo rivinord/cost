@@ -14,10 +14,8 @@
 
  <Header />
 
-<div>
 
   {@render children()}
-</div>
 
 
 <style></style>
