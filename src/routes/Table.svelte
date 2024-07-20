@@ -50,8 +50,10 @@ let ingredients = $state([
 </script>
 
 
+
+
 <div class=" grid grid-cols-1 gap-2 p-6">
-    <p>Добавьте ингредиенты в таблицу, например:</p>
+    <!-- <p>Добавьте ингредиенты в таблицу, например:</p> -->
     <!-- render examples -->
 
     <div class="flex flex-wrap  gap-2 justify-stretch">
@@ -60,7 +62,7 @@ let ingredients = $state([
         {/each}
     </div>
 
-    <p>и введите стоимость и объем каждого ингредиента в упаковке и рецепте</p>
+    <!-- <p>и введите стоимость и объем каждого ингредиента в упаковке и рецепте</p> -->
 </div>
 
 <div class="grid grid-cols-1 gap-7">
