@@ -62,9 +62,17 @@
 	<!-- <p>и введите стоимость и объем каждого ингредиента в упаковке и рецепте</p> -->
 </div>
 
-<div class="grid grid-cols-1 gap-7">
-	<h1 class="text-3xl font-bold px-6">Ingredients table</h1>
-
+<div class="grid grid-cols-1 gap-5">
+	<div class="flex justify-start items-center px-6">
+		<h1 class="text-3xl font-bold ">Ингредиенты</h1>
+		<button
+			class="btn btn-xs ml-4"
+			onclick={() => {
+				ingredients = [{ id: 1, name: '', packageCost: 0, packageVolume: 0, recipeVolume: 0 }];
+			}}>
+			Очистить
+		</button>
+	</div>
 	<!-- table div starts here -->
 	<div class="border rounded-2xl overflow-hidden mx-2">
 		<table class="table">
@@ -111,20 +119,14 @@
 	</div>
 
 	<!-- кнопка добавить новый ингредиент -->
-	<button
-		class="btn"
-		onclick={() =>
-			(ingredients = [...ingredients, { id: ingredients.length + 1, name: '', packageCost: 0, packageVolume: 0, recipeVolume: 0 }])}>
-		Add new
-	</button>
-
-	<button
-		class="btn btn-primary"
-		onclick={() => {
-			ingredients = [{ id: 1, name: '', packageCost: 0, packageVolume: 0, recipeVolume: 0 }];
-		}}>
-		Clear and Add New
-	</button>
+	<div class="flex justify-center gap-2">
+		<button
+			class="btn"
+			onclick={() =>
+				(ingredients = [...ingredients, { id: ingredients.length + 1, name: '', packageCost: 0, packageVolume: 0, recipeVolume: 0 }])}>
+			Добавить ингредиент
+		</button>
+	</div>
 </div>
 
 <style>
