@@ -58,8 +58,7 @@
 	{#each examples as { name, label }}
 		<button
 			class="btn btn-sm"
-			onclick={() =>
-				(ingredients = [...ingredients, { id: ingredients.length + 1, name, packageCost: '', packageVolume: '', recipeVolume: '' }])}
+			onclick={() => ingredients.push({ id: ingredients.length + 1, name, packageCost: '', packageVolume: '', recipeVolume: '' })}
 			>{label}</button>
 	{/each}
 </div>
