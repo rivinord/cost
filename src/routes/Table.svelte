@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { X, Plus } from 'lucide-svelte';
-	import { onMount } from "svelte";
+	import { onMount } from 'svelte';
 
 	let examples = [
 		{ name: 'Молоко', label: '🥛 Молоко' },
@@ -16,7 +16,6 @@
 
 	let ingredients = $state([{ id: 1, name: '', packageCost: '', packageVolume: '', recipeVolume: '' }]);
 
-	
 	onMount(() => {
 		const savedIngredients = localStorage.getItem('ingredients');
 		if (savedIngredients) {
@@ -25,10 +24,9 @@
 	});
 
 	//реактивное изменение ингредиентов
-	$effect(()=> {
-	localStorage.setItem('ingredients', JSON.stringify(ingredients));
+	$effect(() => {
+		localStorage.setItem('ingredients', JSON.stringify(ingredients));
 	});
-
 
 	const deleteIngredient = (id: number) => {
 		ingredients = ingredients.filter((ingredient) => ingredient.id !== id);
@@ -39,40 +37,36 @@
 	};
 
 	const tableSum = $derived(() => {
-    return ingredients
-        .reduce((total, ingredient) => {
-			//сложная штука для типов чтобы по дефолту была пустая строка '', а проверка для начала счета через >0
-            const packageCost = typeof ingredient.packageCost === 'string' ? Number(ingredient.packageCost) : ingredient.packageCost;
-            const packageVolume = typeof ingredient.packageVolume === 'string' ? Number(ingredient.packageVolume) : ingredient.packageVolume;
-            const recipeVolume = typeof ingredient.recipeVolume === 'string' ? Number(ingredient.recipeVolume) : ingredient.recipeVolume;
+		return ingredients
+			.reduce((total, ingredient) => {
+				//сложная штука для типов чтобы по дефолту была пустая строка '', а проверка для начала счета через >0
+				const packageCost = typeof ingredient.packageCost === 'string' ? Number(ingredient.packageCost) : ingredient.packageCost;
+				const packageVolume = typeof ingredient.packageVolume === 'string' ? Number(ingredient.packageVolume) : ingredient.packageVolume;
+				const recipeVolume = typeof ingredient.recipeVolume === 'string' ? Number(ingredient.recipeVolume) : ingredient.recipeVolume;
 
-            if (packageCost > 0 && packageVolume > 0 && recipeVolume > 0) {
-                return total + packageCost * (recipeVolume / packageVolume);
-            }
-            return total;
-        }, 0)
-        .toFixed(2);
-});
+				if (packageCost > 0 && packageVolume > 0 && recipeVolume > 0) {
+					return total + packageCost * (recipeVolume / packageVolume);
+				}
+				return total;
+			}, 0)
+			.toFixed(2);
+	});
 </script>
 
-
-	
-	<!-- render examples -->
-	<div class="flex flex-wrap gap-2 p-6">
-		{#each examples as { name, label }}
-			<button
-				class="btn btn-sm"
-				onclick={() =>
-					(ingredients = [...ingredients, { id: ingredients.length + 1, name, packageCost: '', packageVolume: '', recipeVolume: '' }])}
-				>{label}</button>
-		{/each}
-	</div>
-
-
+<!-- render examples -->
+<div class="flex flex-wrap gap-2 p-6">
+	{#each examples as { name, label }}
+		<button
+			class="btn btn-sm"
+			onclick={() =>
+				(ingredients = [...ingredients, { id: ingredients.length + 1, name, packageCost: '', packageVolume: '', recipeVolume: '' }])}
+			>{label}</button>
+	{/each}
+</div>
 
 <div class="grid grid-cols-1 gap-5">
 	<div class="flex justify-start items-center px-6">
-		<h1 class="text-3xl font-bold ">Ингредиенты</h1>
+		<h1 class="text-3xl font-bold">Ингредиенты</h1>
 		<button
 			class="btn btn-xs ml-4"
 			onclick={() => {
@@ -130,8 +124,7 @@
 	<div class="flex justify-center gap-2">
 		<button
 			class="btn"
-			onclick={() =>
-				(ingredients = [...ingredients, { id: ingredients.length + 1, name: '', packageCost: '', packageVolume: '', recipeVolume: '' }])}>
+			onclick={() => ingredients.push({ id: ingredients.length + 1, name: '', packageCost: '', packageVolume: '', recipeVolume: '' })}>
 			Добавить ингредиент
 		</button>
 	</div>
