@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { X, Plus } from 'lucide-svelte';
+	import { fade } from 'svelte/transition';
 
 	let examples = [
 		{ name: 'Молоко', label: '🥛 Молоко' },
@@ -19,7 +20,6 @@
 	$effect(() => {
 		const savedIngredients = localStorage.getItem('ingredients');
 		savedIngredients && (ingredients = JSON.parse(savedIngredients));
-
 	});
 
 	//реактивное изменение ингредиентов
@@ -27,9 +27,15 @@
 		localStorage.setItem('ingredients', JSON.stringify(ingredients));
 	});
 
-	const deleteIngredient = (i:number) => {
-    ingredients = ingredients.filter((ingredient, index) => index !== i);
-};
+	const deleteIngredient = (i: number) => {
+		ingredients = ingredients.filter((ingredient, index) => index !== i);
+	};
+
+
+	// const deleteIngredient = (id:number) => {
+  	// 	ingredients = ingredients.filter((ingredient) => ingredient.id !== id);
+	// };
+
 
 	const tableSum = $derived(() => {
 		return ingredients
@@ -51,9 +57,7 @@
 <!-- render examples -->
 <div class="flex flex-wrap gap-2 p-6">
 	{#each examples as { name, label }}
-		<button
-			class="btn btn-sm"
-			onclick={() => ingredients.push({ name, packageCost: '', packageVolume: '', recipeVolume: '' })}
+		<button class="btn btn-sm" onclick={() => ingredients.push({ name, packageCost: '', packageVolume: '', recipeVolume: '' })}
 			>{label}</button>
 	{/each}
 </div>
@@ -83,17 +87,17 @@
 				</tr>
 			</thead>
 			<tbody>
-				{#each ingredients as ingredient, i}
-					<tr>
-						<th class="text-xs bg-base-200 text-neutral w-fit">{i+1}</th>
+				<!-- redner ingredients table -->
+				{#each ingredients as ingredient (ingredient)}
+					<tr transition:fade>
+						<th class="text-xs bg-base-200 text-neutral w-fit">{ingredients.indexOf(ingredient) + 1}</th>
 						<th scope="row"><input type="text" bind:value={ingredient.name} class="input input-bordered w-full max-w-xs" /></th>
 						<td><input type="number" bind:value={ingredient.packageCost} class="input input-bordered w-full max-w-xs" /></td>
 						<td><input type="number" bind:value={ingredient.packageVolume} class="input input-bordered w-full max-w-xs" /></td>
 						<td><input type="number" bind:value={ingredient.recipeVolume} class="input input-bordered w-full max-w-xs" /></td>
 						<!-- кнопка удалить ингредиент -->
 						<td class="bg-base-200">
-							<button onclick={() => deleteIngredient(i)}><X class="text-red-500" strokeWidth={3} size={20} />
-							</button>
+							<button onclick={() => deleteIngredient(ingredients.indexOf(ingredient))}><X class="text-red-500" strokeWidth={3} size={20} /> </button>
 						</td>
 					</tr>
 				{/each}
@@ -118,9 +122,7 @@
 
 	<!-- кнопка добавить новый ингредиент -->
 	<div class="flex justify-center gap-2">
-		<button
-			class="btn"
-			onclick={() => ingredients.push({ name: '', packageCost: '', packageVolume: '', recipeVolume: '' })}>
+		<button class="btn" onclick={() => ingredients.push({ name: '', packageCost: '', packageVolume: '', recipeVolume: '' })}>
 			Добавить ингредиент
 		</button>
 	</div>
