@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { X, Plus } from 'lucide-svelte';
+	import { onMount } from "svelte";
 
 	let examples = [
 		{ name: 'Молоко', label: '🥛 Молоко' },
@@ -13,13 +14,17 @@
 		{ name: 'Масло', label: '💧 Масло' }
 	];
 
-	let ingredients = $state([{ id: 1, name: '', packageCost: 0, packageVolume: 0, recipeVolume: 0 }]);
+	let ingredients = $state([{ id: 1, name: '', packageCost: '', packageVolume: '', recipeVolume: '' }]);
 
-	$effect(()=> {
-	const savedIngredients = localStorage.getItem('ingredients');
-	if(savedIngredients) ingredients = JSON.parse(savedIngredients);
+	
+	onMount(() => {
+		const savedIngredients = localStorage.getItem('ingredients');
+		if (savedIngredients) {
+			ingredients = JSON.parse(savedIngredients);
+		}
 	});
 
+	//реактивное изменение ингредиентов
 	$effect(()=> {
 	localStorage.setItem('ingredients', JSON.stringify(ingredients));
 	});
@@ -34,15 +39,20 @@
 	};
 
 	const tableSum = $derived(() => {
-		return ingredients
-			.reduce((total, ingredient) => {
-				if (ingredient.packageCost > 0 && ingredient.packageVolume > 0 && ingredient.recipeVolume > 0) {
-					return total + ingredient.packageCost * (ingredient.recipeVolume / ingredient.packageVolume);
-				}
-				return total;
-			}, 0)
-			.toFixed(2);
-	});
+    return ingredients
+        .reduce((total, ingredient) => {
+			//сложная штука для типов чтобы по дефолту была пустая строка '', а проверка для начала счета через >0
+            const packageCost = typeof ingredient.packageCost === 'string' ? Number(ingredient.packageCost) : ingredient.packageCost;
+            const packageVolume = typeof ingredient.packageVolume === 'string' ? Number(ingredient.packageVolume) : ingredient.packageVolume;
+            const recipeVolume = typeof ingredient.recipeVolume === 'string' ? Number(ingredient.recipeVolume) : ingredient.recipeVolume;
+
+            if (packageCost > 0 && packageVolume > 0 && recipeVolume > 0) {
+                return total + packageCost * (recipeVolume / packageVolume);
+            }
+            return total;
+        }, 0)
+        .toFixed(2);
+});
 </script>
 
 
@@ -53,7 +63,7 @@
 			<button
 				class="btn btn-sm"
 				onclick={() =>
-					(ingredients = [...ingredients, { id: ingredients.length + 1, name, packageCost: 0, packageVolume: 0, recipeVolume: 0 }])}
+					(ingredients = [...ingredients, { id: ingredients.length + 1, name, packageCost: '', packageVolume: '', recipeVolume: '' }])}
 				>{label}</button>
 		{/each}
 	</div>
@@ -66,7 +76,7 @@
 		<button
 			class="btn btn-xs ml-4"
 			onclick={() => {
-				ingredients = [{ id: 1, name: '', packageCost: 0, packageVolume: 0, recipeVolume: 0 }];
+				ingredients = [{ id: 1, name: '', packageCost: '', packageVolume: '', recipeVolume: '' }];
 			}}>
 			Очистить
 		</button>
@@ -102,7 +112,7 @@
 				<tr class="bg-base-200">
 					<td colspan="2"></td>
 					<!-- кнопка добавить новый ингредиент -->
-					<!-- <td colspan="1"><button class="btn btn-outline w-full border-dashed border-base-content/30" onclick={() => (ingredients = [...ingredients, { id: ingredients.length + 1, name: '', packageCost: 0, packageVolume: 0, recipeVolume: 0 }])}> 
+					<!-- <td colspan="1"><button class="btn btn-outline w-full border-dashed border-base-content/30" onclick={() => (ingredients = [...ingredients, { id: ingredients.length + 1, name: '', packageCost: '', packageVolume: '', recipeVolume: '' }])}> 
                         <Plus /> 
                     </button></td> -->
 					<!-- выводит сумму всех ингредиентов в рецепте -->
@@ -121,7 +131,7 @@
 		<button
 			class="btn"
 			onclick={() =>
-				(ingredients = [...ingredients, { id: ingredients.length + 1, name: '', packageCost: 0, packageVolume: 0, recipeVolume: 0 }])}>
+				(ingredients = [...ingredients, { id: ingredients.length + 1, name: '', packageCost: '', packageVolume: '', recipeVolume: '' }])}>
 			Добавить ингредиент
 		</button>
 	</div>
