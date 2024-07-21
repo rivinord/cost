@@ -13,9 +13,9 @@
 		{ name: 'Масло', label: '💧 Масло' }
 	];
 
-	let ingredients = $state([{ id: 1, name: '', packageCost: '', packageVolume: '', recipeVolume: '' }]);
+	let ingredients = $state([{ name: '', packageCost: '', packageVolume: '', recipeVolume: '' }]);
 
-	//get ingredients from on launch
+	//get ingredients from localStorage on launch
 	$effect(() => {
 		const savedIngredients = localStorage.getItem('ingredients');
 		savedIngredients && (ingredients = JSON.parse(savedIngredients));
@@ -27,13 +27,9 @@
 		localStorage.setItem('ingredients', JSON.stringify(ingredients));
 	});
 
-	const deleteIngredient = (id: number) => {
-		ingredients = ingredients.filter((ingredient) => ingredient.id !== id);
-		ingredients = ingredients.map((ingredient, index) => ({
-			...ingredient,
-			id: index + 1
-		}));
-	};
+	const deleteIngredient = (i:number) => {
+    ingredients = ingredients.filter((ingredient, index) => index !== i);
+};
 
 	const tableSum = $derived(() => {
 		return ingredients
@@ -57,7 +53,7 @@
 	{#each examples as { name, label }}
 		<button
 			class="btn btn-sm"
-			onclick={() => ingredients.push({ id: ingredients.length + 1, name, packageCost: '', packageVolume: '', recipeVolume: '' })}
+			onclick={() => ingredients.push({ name, packageCost: '', packageVolume: '', recipeVolume: '' })}
 			>{label}</button>
 	{/each}
 </div>
@@ -65,13 +61,13 @@
 <div class="grid grid-cols-1 gap-5">
 	<div class="flex justify-start items-center px-6">
 		<h1 class="text-3xl font-bold">Ингредиенты</h1>
-		<button
+		<!-- <button
 			class="btn btn-xs ml-4"
 			onclick={() => {
 				ingredients = [{ id: 1, name: '', packageCost: '', packageVolume: '', recipeVolume: '' }];
 			}}>
 			Очистить
-		</button>
+		</button> -->
 	</div>
 	<!-- table div starts here -->
 	<div class="border rounded-2xl overflow-hidden mx-2">
@@ -87,16 +83,18 @@
 				</tr>
 			</thead>
 			<tbody>
-				{#each ingredients as ingredient (ingredient.id)}
+				{#each ingredients as ingredient, i}
 					<tr>
-						<th class="text-xs bg-base-200 text-neutral w-fit">{ingredient.id}</th>
+						<th class="text-xs bg-base-200 text-neutral w-fit">{i+1}</th>
 						<th scope="row"><input type="text" bind:value={ingredient.name} class="input input-bordered w-full max-w-xs" /></th>
 						<td><input type="number" bind:value={ingredient.packageCost} class="input input-bordered w-full max-w-xs" /></td>
 						<td><input type="number" bind:value={ingredient.packageVolume} class="input input-bordered w-full max-w-xs" /></td>
 						<td><input type="number" bind:value={ingredient.recipeVolume} class="input input-bordered w-full max-w-xs" /></td>
 						<!-- кнопка удалить ингредиент -->
-						<td class="bg-base-200"
-							><button onclick={() => deleteIngredient(ingredient.id)}><X class="text-red-500" strokeWidth={3} size={20} /></button></td>
+						<td class="bg-base-200">
+							<button onclick={() => deleteIngredient(i)}><X class="text-red-500" strokeWidth={3} size={20} />
+							</button>
+						</td>
 					</tr>
 				{/each}
 			</tbody>
@@ -122,7 +120,7 @@
 	<div class="flex justify-center gap-2">
 		<button
 			class="btn"
-			onclick={() => ingredients.push({ id: ingredients.length + 1, name: '', packageCost: '', packageVolume: '', recipeVolume: '' })}>
+			onclick={() => ingredients.push({ name: '', packageCost: '', packageVolume: '', recipeVolume: '' })}>
 			Добавить ингредиент
 		</button>
 	</div>
