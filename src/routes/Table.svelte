@@ -19,11 +19,17 @@
 		{ name: 'Оливковое масло', label: '💧 Оливковое масло' }
 	];
 
-	let ingredients = $state([
-		{ id: 1, name: 'Помидор', packageCost: 2, packageVolume: 3.5, recipeVolume: 4 },
-		{ id: 2, name: 'Лук', packageCost: 1.2, packageVolume: 1.5, recipeVolume: 2 },
-		{ id: 3, name: 'Картошка', packageCost: 0.5, packageVolume: 0.5, recipeVolume: 0.5 }
-	]);
+	let ingredients = $state([{ id: 1, name: '', packageCost: 0, packageVolume: 0, recipeVolume: 0 }]);
+
+	$effect(()=> {
+	const savedTodos = localStorage.getItem('ingredients');
+	if(savedTodos) ingredients = JSON.parse(savedTodos);
+	});
+
+	$effect(()=> {
+	localStorage.setItem('ingredients', JSON.stringify(ingredients));
+	});
+
 
 	const deleteIngredient = (id: number) => {
 		ingredients = ingredients.filter((ingredient) => ingredient.id !== id);
@@ -52,7 +58,7 @@
 	<div class="flex flex-wrap gap-2 justify-stretch">
 		{#each examples as { name, label }}
 			<button
-				class="btn btn-sm"
+				class="btn btn-xs"
 				onclick={() =>
 					(ingredients = [...ingredients, { id: ingredients.length + 1, name, packageCost: 0, packageVolume: 0, recipeVolume: 0 }])}
 				>{label}</button>
