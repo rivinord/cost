@@ -26,7 +26,7 @@
 </script>
 
 
-<form class="flex gap-5">
+<form class="flex gap-5 ml-6 mt-4">
     {#each themes as { name, label } }
         <div class="inline-flex items-center gap-2">
             <input bind:group={theme} id={name} {name} value={name} type="radio" />

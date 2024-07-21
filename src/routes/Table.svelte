@@ -5,25 +5,19 @@
 		{ name: 'Молоко', label: '🥛 Молоко' },
 		{ name: 'Хлеб', label: '🍞 Хлеб' },
 		{ name: 'Масло', label: '🧈 Масло' },
-		{ name: 'Яйцо', label: '🥚 Яица' },
-		{ name: 'Сыр', label: '🧀 Сыр' },
-		{ name: 'Мясо', label: '🥩 Мясо' },
-		{ name: 'Рыба', label: '🐟 Рыба' },
-		{ name: 'Картофель', label: '🥔 Картофель' },
-		{ name: 'Помидор', label: '🍅 Помидор' },
-		{ name: 'Лук', label: '🥒 Лук' },
-		{ name: 'Чеснок', label: '💡 Чеснок' },
-		{ name: 'Соль', label: '💸 Соль' },
-		{ name: 'Сахар', label: '🍮 Сахар' },
+		{ name: 'Яица', label: '🥚 Яица' },
+		{ name: 'Соль', label: '🧂 Соль' },
+		{ name: 'Сахар', label: '⚪️ Сахар' },
+		{ name: 'Перец', label: '⚫️ Перец' },
 		{ name: 'Мед', label: '🍯 Мед' },
-		{ name: 'Оливковое масло', label: '💧 Оливковое масло' }
+		{ name: 'Масло', label: '💧 Масло' }
 	];
 
 	let ingredients = $state([{ id: 1, name: '', packageCost: 0, packageVolume: 0, recipeVolume: 0 }]);
 
 	$effect(()=> {
-	const savedTodos = localStorage.getItem('ingredients');
-	if(savedTodos) ingredients = JSON.parse(savedTodos);
+	const savedIngredients = localStorage.getItem('ingredients');
+	if(savedIngredients) ingredients = JSON.parse(savedIngredients);
 	});
 
 	$effect(()=> {
@@ -51,22 +45,20 @@
 	});
 </script>
 
-<div class=" grid grid-cols-1 gap-2 p-6">
-	<!-- <p>Добавьте ингредиенты в таблицу, например:</p> -->
-	<!-- render examples -->
 
-	<div class="flex flex-wrap gap-2 justify-stretch">
+	
+	<!-- render examples -->
+	<div class="flex flex-wrap gap-2 p-6">
 		{#each examples as { name, label }}
 			<button
-				class="btn btn-xs"
+				class="btn btn-sm"
 				onclick={() =>
 					(ingredients = [...ingredients, { id: ingredients.length + 1, name, packageCost: 0, packageVolume: 0, recipeVolume: 0 }])}
 				>{label}</button>
 		{/each}
 	</div>
 
-	<!-- <p>и введите стоимость и объем каждого ингредиента в упаковке и рецепте</p> -->
-</div>
+
 
 <div class="grid grid-cols-1 gap-5">
 	<div class="flex justify-start items-center px-6">
