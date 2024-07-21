@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { X, Plus } from 'lucide-svelte';
-	import { onMount } from 'svelte';
 
 	let examples = [
 		{ name: 'Молоко', label: '🥛 Молоко' },
@@ -16,11 +15,11 @@
 
 	let ingredients = $state([{ id: 1, name: '', packageCost: '', packageVolume: '', recipeVolume: '' }]);
 
-	onMount(() => {
+	//get ingredients from on launch
+	$effect(() => {
 		const savedIngredients = localStorage.getItem('ingredients');
-		if (savedIngredients) {
-			ingredients = JSON.parse(savedIngredients);
-		}
+		savedIngredients && (ingredients = JSON.parse(savedIngredients));
+
 	});
 
 	//реактивное изменение ингредиентов
