@@ -1,14 +1,14 @@
 <script lang="ts">
     // Добавьте список доступных тем
     const themes = [
-        { name: 'auto', label: 'Auto' },
-        { name: 'light', label: 'Light' },
-        { name: 'dark', label: 'Dark' },
-        { name: 'retro', label: 'Retro' },
+        // { name: 'auto', label: 'Auto' },
+        { name: 'light', label: 'Светлая' },
+        { name: 'dark', label: 'Тёмная' },
+        { name: 'retro', label: 'Кекс' },
     ];
 
     // Инициализация темы, 'auto' по умолчанию
-    let theme = $state('auto');
+    let theme = $state('dark');
 
     // Обновляем тему при загрузке страницы, если она сохранена в localStorage
     if (typeof window !== 'undefined') {
@@ -26,11 +26,14 @@
 </script>
 
 
-<form class="flex gap-5 ml-6 mt-4">
-    {#each themes as { name, label } }
-        <div class="inline-flex items-center gap-2">
-            <input bind:group={theme} id={name} {name} value={name} type="radio" />
-            <label for={name}>{label}</label>
-        </div>
+
+
+  <select class="select select-bordered w-full max-w-52" bind:value={theme}>
+    {#each themes as theme}
+      <option value={theme.name}>
+        {theme.label}
+      </option>
     {/each}
-</form>
+  </select>
+
+  
