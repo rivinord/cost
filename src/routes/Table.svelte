@@ -32,9 +32,7 @@
 	};
 
 
-	// const deleteIngredient = (id:number) => {
-  	// 	ingredients = ingredients.filter((ingredient) => ingredient.id !== id);
-	// };
+
 
 
 	const tableSum = $derived(() => {
@@ -65,13 +63,13 @@
 <div class="grid grid-cols-1 gap-5">
 	<div class="flex justify-start items-center px-6">
 		<h1 class="text-3xl font-bold">Ингредиенты</h1>
-		<!-- <button
+		<button
 			class="btn btn-xs ml-4"
 			onclick={() => {
-				ingredients = [{ id: 1, name: '', packageCost: '', packageVolume: '', recipeVolume: '' }];
+				ingredients = [{ name: '', packageCost: '', packageVolume: '', recipeVolume: '' }];
 			}}>
 			Очистить
-		</button> -->
+		</button>
 	</div>
 	<!-- table div starts here -->
 	<div class="border rounded-2xl overflow-hidden mx-2">
@@ -80,16 +78,16 @@
 				<tr>
 					<th scope="col"></th>
 					<th scope="col">🍱 Ингредиент</th>
-					<th scope="col">Стоимость упаковки</th>
-					<th scope="col">Объем в&nbsp;упаковке</th>
-					<th scope="col">Объем в&nbsp;рецепте</th>
+					<th scope="col">Стоимость упаковки <span class="font-normal italic">(₽)</span></th>
+					<th scope="col">Объем в&nbsp;упаковке <span class="font-normal text-nowrap italic">(мл/г/шт)</span></th>
+					<th scope="col">Объем в&nbsp;рецепте <span class="font-normal text-nowrap italic">(мл/г/шт)</span></th>
 					<th scope="col"></th>
 				</tr>
 			</thead>
 			<tbody>
 				<!-- redner ingredients table -->
 				{#each ingredients as ingredient (ingredient)}
-					<tr transition:fade>
+					<tr in:fade>
 						<th class="text-xs bg-base-200 text-neutral w-fit">{ingredients.indexOf(ingredient) + 1}</th>
 						<th scope="row"><input type="text" bind:value={ingredient.name} class="input input-bordered w-full max-w-xs" /></th>
 						<td><input type="number" bind:value={ingredient.packageCost} class="input input-bordered w-full max-w-xs" /></td>
