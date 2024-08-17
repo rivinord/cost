@@ -186,7 +186,7 @@
 						<th class="text-xs bg-base-200 text-neutral w-fit">{consumables.indexOf(consumable) + 1}</th>
 						<th scope="row"><input type="text" bind:value={consumable.name} class="input input-bordered w-full" /></th>
 						<td><input type="number" bind:value={consumable.cost} class="input input-bordered w-full" /></td>
-						<td class="bg-base-200">
+						<td class="bg-base-200 w-16">
 							<button onclick={() => deleteConsumable(consumables.indexOf(consumable))}
 								><X class="text-red-500" strokeWidth={3} size={20} />
 							</button>
@@ -210,12 +210,12 @@
 	<div class="flex justify-center gap-2 pb-8">
 		<button class="btn" onclick={() => consumables.push({ name: '', cost: '' })}> Добавить расходник </button>
 	</div>
+	<div class="flex justify-start items-center  rounded-2xl p-4 text-left bg-base-200 m-2">
+		<h1 class="text-3xl font-bold">Общий итог: {totalSum}&#8381;</h1>
+	</div>
 </div>
 
 
-<div class="flex justify-start items-center w-full rounded-2xl p-4 text-left bg-base-200">
-    <h1 class="text-3xl font-bold">Общий итог: {totalSum}&#8381;</h1>
-</div>
 
 <style>
 	input {
