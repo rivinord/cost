@@ -3,70 +3,84 @@
 	import { fade } from 'svelte/transition';
 
 	let examples = [
-		{ name: 'Молоко', label: '🥛 Молоко' },
-		{ name: 'Хлеб', label: '🍞 Хлеб' },
-		{ name: 'Масло', label: '🧈 Масло' },
-		{ name: 'Яица', label: '🥚 Яица' },
-		{ name: 'Соль', label: '🧂 Соль' },
-		{ name: 'Сахар', label: '⚪️ Сахар' },
-		{ name: 'Перец', label: '⚫️ Перец' },
-		{ name: 'Мед', label: '🍯 Мед' },
-		{ name: 'Масло', label: '💧 Масло' }
+			{ name: 'Молоко', label: '🥛 Молоко' },
+			{ name: 'Хлеб', label: '🍞 Хлеб' },
+			{ name: 'Масло', label: '🧈 Масло' },
+			{ name: 'Яйца', label: '🥚 Яйца' },
+			{ name: 'Соль', label: '🧂 Соль' },
+			{ name: 'Сахар', label: '⚪️ Сахар' },
+			{ name: 'Перец', label: '⚫️ Перец' },
+			{ name: 'Мед', label: '🍯 Мед' },
+			{ name: 'Масло', label: '💧 Масло' }
 	];
 
 	let examples2 = [
-		{ name: 'Доставка', label: '🚚 Доставка' },
-		{ name: 'Упаковка', label: '📦 Упаковка' }
+			{ name: 'Доставка', label: '🚚 Доставка' },
+			{ name: 'Упаковка', label: '📦 Упаковка' }
 	];
 
 	let ingredients = $state([{ name: '', packageCost: '', packageVolume: '', recipeVolume: '' }]);
 	let consumables = $state([{ name: '', cost: '' }]);
 
-	//get ingredients from localStorage on launch
 	$effect(() => {
-		const savedIngredients = localStorage.getItem('ingredients');
-		savedIngredients && (ingredients = JSON.parse(savedIngredients));
+			const savedIngredients = localStorage.getItem('ingredients');
+			if (savedIngredients) ingredients = JSON.parse(savedIngredients);
 	});
 
-	//get consumables from localStorage on launch
 	$effect(() => {
-		const savedConsumables = localStorage.getItem('consumables');
-		savedConsumables && (consumables = JSON.parse(savedConsumables));
+			const savedConsumables = localStorage.getItem('consumables');
+			if (savedConsumables) consumables = JSON.parse(savedConsumables);
 	});
 
-	//реактивное изменение ингредиентов
 	$effect(() => {
-		localStorage.setItem('ingredients', JSON.stringify(ingredients));
+			localStorage.setItem('ingredients', JSON.stringify(ingredients));
 	});
 
-	//реактивное изменение consumables
 	$effect(() => {
-		localStorage.setItem('consumables', JSON.stringify(consumables));
+			localStorage.setItem('consumables', JSON.stringify(consumables));
 	});
 
 	const deleteIngredient = (i: number) => {
-		ingredients = ingredients.filter((ingredient, index) => index !== i);
+			ingredients = ingredients.filter((_, index) => index !== i);
 	};
 
 	const deleteConsumable = (i: number) => {
-		consumables = consumables.filter((consumable, index) => index !== i);
+			consumables = consumables.filter((_, index) => index !== i);
 	};
 
-	const tableSum = $derived(() => {
-		return ingredients
-			.reduce((total, ingredient) => {
-				//сложная штука для типов чтобы по дефолту была пустая строка '', а проверка для начала счета через >0
-				const packageCost = typeof ingredient.packageCost === 'string' ? Number(ingredient.packageCost) : ingredient.packageCost;
-				const packageVolume = typeof ingredient.packageVolume === 'string' ? Number(ingredient.packageVolume) : ingredient.packageVolume;
-				const recipeVolume = typeof ingredient.recipeVolume === 'string' ? Number(ingredient.recipeVolume) : ingredient.recipeVolume;
+	const calculateSum = (items: any[], costField: string) => {
+			return items.reduce((total, item) => {
+					const cost = typeof item[costField] === 'string' ? Number(item[costField]) : item[costField];
+					return total + (cost > 0 ? cost : 0);
+			}, 0);
+	};
 
-				if (packageCost > 0 && packageVolume > 0 && recipeVolume > 0) {
-					return total + packageCost * (recipeVolume / packageVolume);
-				}
-				return total;
-			}, 0)
-			.toFixed(2);
-	});
+	function calculateIngredientsSum() {
+        return ingredients
+            .reduce((total, ingredient) => {
+                const packageCost = Number(ingredient.packageCost) || 0;
+                const packageVolume = Number(ingredient.packageVolume) || 0;
+                const recipeVolume = Number(ingredient.recipeVolume) || 0;
+
+                if (packageCost > 0 && packageVolume > 0 && recipeVolume > 0) {
+                    return total + packageCost * (recipeVolume / packageVolume);
+                }
+                return total;
+            }, 0)
+            .toFixed(2);
+    }
+
+    function calculateConsumablesSum() {
+        return consumables
+            .reduce((total, consumable) => {
+                return total + (Number(consumable.cost) || 0);
+            }, 0)
+            .toFixed(2);
+    }
+
+    const totalSum = $derived(
+        (Number(calculateIngredientsSum()) + Number(calculateConsumablesSum())).toFixed(2)
+    );
 </script>
 
 <!-- render examples -->
@@ -122,14 +136,9 @@
 			<tfoot>
 				<tr class="bg-base-200">
 					<td colspan="2"></td>
-					<!-- кнопка добавить новый ингредиент -->
-					<!-- <td colspan="1"><button class="btn btn-outline w-full border-dashed border-base-content/30" onclick={() => (ingredients = [...ingredients, { id: ingredients.length + 1, name: '', packageCost: '', packageVolume: '', recipeVolume: '' }])}> 
-                        <Plus /> 
-                    </button></td> -->
-					<!-- выводит сумму всех ингредиентов в рецепте -->
 					<td class="text-right text-red-500 text-lg" colspan="3">
 						Итого:
-						{tableSum()}&#8381;
+						{calculateIngredientsSum()}&#8381;
 					</td>
 					<td colspan="1"></td>
 				</tr>
@@ -188,14 +197,9 @@
 			<tfoot>
 				<tr class="bg-base-200">
 					<td colspan="1"></td>
-					<!-- кнопка добавить новый ингредиент -->
-					<!-- <td colspan="1"><button class="btn btn-outline w-full border-dashed border-base-content/30" onclick={() => (ingredients = [...ingredients, { id: ingredients.length + 1, name: '', packageCost: '', packageVolume: '', recipeVolume: '' }])}> 
-					<Plus /> 
-				</button></td> -->
-					<!-- выводит сумму всех ингредиентов в рецепте -->
 					<td class="text-right text-red-500 text-lg" colspan="2">
 						Итого:
-						{tableSum()}&#8381;
+						{calculateConsumablesSum()}&#8381;
 					</td>
 					<td colspan="1"></td>
 				</tr>
@@ -210,7 +214,7 @@
 
 
 <div class="flex justify-start items-center w-full rounded-2xl p-4 text-left bg-base-200">
-	<h1 class="text-3xl font-bold">Общий итог: </h1>
+    <h1 class="text-3xl font-bold">Общий итог: {totalSum}&#8381;</h1>
 </div>
 
 <style>
